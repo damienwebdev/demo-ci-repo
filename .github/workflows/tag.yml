@@ -1,0 +1,12 @@
+name: Tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "workflow_ref=${{ github.workflow_ref }}"

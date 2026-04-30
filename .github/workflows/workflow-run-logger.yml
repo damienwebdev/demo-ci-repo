@@ -1,0 +1,17 @@
+name: Workflow Run Logger
+
+on:
+  workflow_run:
+    workflows:
+      - Tag
+    types:
+      - completed
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "workflow_ref=${{ github.workflow_ref }}"
+          echo "event.workflow_run.conclusion=${{ github.event.workflow_run.conclusion }}"
+          echo "event.workflow_run.ref=${{ github.event.workflow_run.ref }}"
