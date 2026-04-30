@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+      cache-mode:
+        required: true
+        type: string
+
+env:
+  NG_BUILD_ENV: ${{ github.ref_type == 'tag' && 'production' || 'next' }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+      - run: |
+          echo "=== github context ==="
+          echo "github.ref=${{ github.ref }}"
+          echo "github.sha=${{ github.sha }}"
+          echo "github.ref_type=${{ github.ref_type }}"
+          echo "github.ref_name=${{ github.ref_name }}"
+          echo "github.workflow_ref=${{ github.workflow_ref }}"
+          echo "github.workflow_sha=${{ github.workflow_sha }}"
+          echo "github.event_name=${{ github.event_name }}"
+          echo "=== inputs ==="
+          echo "inputs.ref=${{ inputs.ref }}"
+          echo "inputs.cache-mode=${{ inputs.cache-mode }}"
+          echo "=== env ==="
+          echo "NG_BUILD_ENV=${{ env.NG_BUILD_ENV }}"

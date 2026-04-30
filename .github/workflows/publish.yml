@@ -1,16 +1,20 @@
-name: Workflow Run Logger
+name: Publish
 
 on:
   workflow_run:
     workflows:
-      - Tag
+      - Build Release
     types:
       - completed
 
 jobs:
-  log:
+  publish:
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
       - run: |
           echo "=== github context ==="
           echo "github.ref=${{ github.ref }}"
